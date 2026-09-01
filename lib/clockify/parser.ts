@@ -83,7 +83,9 @@ export async function parseClockifyFile(file: File): Promise<ParsedClockifyFile>
   return { rows, sourceFileName: file.name };
 }
 
-function normalizeDuration(value: unknown, rowIndex: number): number | string {
+/** Exported so other parsers (e.g. the monthly consolidation flow) can reuse the exact
+ * same coercion/error semantics instead of duplicating it. */
+export function normalizeDuration(value: unknown, rowIndex: number): number | string {
   if (value === "" || value === undefined || value === null) {
     throw new ClockifyParseError(`Row ${rowIndex + 2}: "Duration (decimal)" is missing.`);
   }
